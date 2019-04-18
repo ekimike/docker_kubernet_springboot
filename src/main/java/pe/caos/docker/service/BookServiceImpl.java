@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 
 import lombok.extern.log4j.Log4j2;
 import pe.caos.docker.domain.Book;
-import pe.caos.docker.exception.BookAlreadyExistsExceptionString;
+import pe.caos.docker.exception.BookAlreadyExistsException;
 import pe.caos.docker.repository.BookRepository;
 
 @Log4j2
@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService
 		log.debug("Creating book");
 		Optional<Book> existing = repository.findById(book.getId());
 		if (existing != null) {
-			throw new BookAlreadyExistsExceptionString.format("There already exists a book with id=%s", book.getId())); 
+			throw new BookAlreadyExistsException(String.format("There already exists a book with id=%s", book.getId())); 
 		}
 		return repository.save(book);
 	}
