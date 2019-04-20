@@ -73,15 +73,6 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
 	<repositories>
 		<repository>
 			<id>spring-releases</id>
@@ -94,5 +85,40 @@
 			<url>https://repo.spring.io/libs-release</url>
 		</pluginRepository>
 	</pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.20.1</version>
+				<configuration>
+					<images>
+						<image>
+							<name>rest-example:${project.version}
+							</name>
+							<alias>rest-example</alias>
+							<build>
+								<from>openjdk:latest</from>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<cmd>java -jar maven/${project.name}-${project.version}.jar</cmd>
+							</build>
+							<run>
+								<wait>
+									<log>Hello World!</log>
+								</wait>
+							</run>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
